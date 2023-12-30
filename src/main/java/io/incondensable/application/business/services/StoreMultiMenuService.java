@@ -6,11 +6,10 @@ import io.incondensable.application.business.exception.store.OwnerNotPaidForMult
 import io.incondensable.application.business.exception.store.OwnerViolatingSingleStoreException;
 import io.incondensable.application.business.exception.store.StoreNotFoundException;
 import io.incondensable.application.dao.repositories.StoreMultiMenuRepository;
-import io.incondensable.application.mappers.store.CmdStoreMultiMenuMapper;
-import io.incondensable.application.mappers.store.QueryStoreMultiMenuMapper;
-import io.incondensable.application.web.dto.store.multi_menu.command.StoreMultiMenuCreateRequestDTO;
-import io.incondensable.application.web.dto.store.multi_menu.command.StoreMultiMenuUpdateRequestDTO;
-import io.incondensable.application.web.dto.store.single_menu.query.StoreMultiMenuInfoFindResponseDTO;
+import io.incondensable.application.mappers.StoreMultiMenuMapper;
+import io.incondensable.application.web.dto.store.multi_menu.StoreMultiMenuCreateRequestDTO;
+import io.incondensable.application.web.dto.store.multi_menu.StoreMultiMenuUpdateRequestDTO;
+import io.incondensable.application.web.dto.store.single_menu.StoreMultiMenuInfoFindResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,25 +25,23 @@ public class StoreMultiMenuService {
 
     private final OwnerService ownerService;
     private final StoreMultiMenuRepository repo;
-    private final QueryStoreMultiMenuMapper storeQuery;
-    private final CmdStoreMultiMenuMapper storeCommand;
+    private final StoreMultiMenuMapper mapper;
 
-    public StoreMultiMenuService(OwnerService ownerService, StoreMultiMenuRepository repo, QueryStoreMultiMenuMapper storeQuery, CmdStoreMultiMenuMapper storeCommand) {
+    public StoreMultiMenuService(OwnerService ownerService, StoreMultiMenuRepository repo, StoreMultiMenuMapper mapper) {
         this.ownerService = ownerService;
         this.repo = repo;
-        this.storeQuery = storeQuery;
-        this.storeCommand = storeCommand;
+        this.mapper = mapper;
     }
 
     public List<StoreMultiMenuInfoFindResponseDTO> getAllByOwnerId(Long ownerId) {
         ownerService.getById(ownerId);
         return repo.findAllByOwnerId(ownerId).stream().map(
-                storeQuery::entityToInfoDto
+                mapper::entityToInfoDto
         ).collect(Collectors.toList());
     }
 
     public StoreMultiMenuInfoFindResponseDTO getById(Long storeId) {
-        return storeQuery.entityToInfoDto(getStoreById(storeId));
+        return mapper.entityToInfoDto(getStoreById(storeId));
     }
 
     public StoreMultiMenuInfoFindResponseDTO createStore(StoreMultiMenuCreateRequestDTO dto) {
@@ -55,15 +52,15 @@ public class StoreMultiMenuService {
         if (owner.canHaveMultiMenu())
             throw new OwnerNotPaidForMultiMenuException(dto.getOwnerId());
 
-        StoreMultiMenu menu = storeCommand.dtoToEntity(dto);
-        return storeQuery.entityToInfoDto(repo.save(menu));
+        StoreMultiMenu menu = mapper.dtoToEntity(dto);
+        return mapper.entityToInfoDto(repo.save(menu));
     }
 
     public StoreMultiMenuInfoFindResponseDTO updateStore(Long storeId, StoreMultiMenuUpdateRequestDTO dto) {
         StoreMultiMenu currentStore = getStoreById(storeId);
 
-        storeCommand.dtoToEntity(currentStore, dto);
-        return storeQuery.entityToInfoDto(repo.save(currentStore));
+        mapper.dtoToEntity(currentStore, dto);
+        return mapper.entityToInfoDto(repo.save(currentStore));
     }
 
     StoreMultiMenu getStoreById(Long storeId) {

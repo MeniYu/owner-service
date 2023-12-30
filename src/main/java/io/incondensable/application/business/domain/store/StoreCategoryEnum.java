@@ -7,5 +7,5 @@ public enum StoreCategoryEnum {
     CAFE,
     RESTAURANT,
     CAFE_RESTAURANT,
-    CAFETERIA;
+    CAFETERIA
 }

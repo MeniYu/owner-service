@@ -1,9 +1,9 @@
-package io.incondensable.application.web.dto.owner;
+package io.incondensable.application.web.dto.employee;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author abbas
@@ -11,8 +11,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-public class OwnerBaseDTO {
+@AllArgsConstructor
+public class EmployeeCreateRequestDto {
     private String firstname;
     private String lastname;
     private int age;

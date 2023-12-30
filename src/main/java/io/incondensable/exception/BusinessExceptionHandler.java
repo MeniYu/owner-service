@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author abbas
@@ -27,7 +28,7 @@ public class BusinessExceptionHandler {
     public ResponseEntity<String> handleBusinessException(BusinessException ex) {
         return ResponseEntity
                 .status(ex.getHttpStatusCode())
-                .body(messageSource.getMessage(ex.getMessage(), ex.getArgs(), ex.getLocale()));
+                .body(messageSource.getMessage(ex.getMessage(), ex.getArgs(), Locale.getDefault()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

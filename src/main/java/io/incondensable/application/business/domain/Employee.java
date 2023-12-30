@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * <p>Employee relationship to Owner is not direct.
+ * actually an Owner has a Store, that Store belongs to the Owner okay?
+ * also, the Store has a Collection of Employees working in there.</p>
+ *
  * @author abbas
  */
 @Entity
@@ -21,6 +25,9 @@ public class Employee extends AsIdentity {
     private String firstname;
     private String lastname;
     private int age;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Owner owner;
 
     @Embedded
     private EntityDetails entityDetails;

@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * <p>an Owner is actually a User with OWNER role. so that this entity needs the UserID.</p>
+ *
  * @author abbas
  */
 @Entity
@@ -26,9 +28,9 @@ public class Owner extends AsIdentity {
     private String lastname;
     private int age;
 
-    private String jwt;
-    @Column(unique = true, nullable = false)
-    private String userId;
+//    private String jwt;
+//    @Column(unique = true, nullable = false)
+//    private String userId;
 
     @Embedded
     private Address address;
@@ -39,17 +41,17 @@ public class Owner extends AsIdentity {
     @Column(unique = true)
     private String email;
 
-    private boolean canHaveMultiMenu;
-    private boolean canHaveMultipleStores;
+    private boolean haveMultipleMenus;
+    private boolean haveMultipleStores;
 
     @Embedded
     private EntityDetails entityDetails;
 
     public boolean canHaveMultiMenu() {
-        return this.canHaveMultiMenu;
+        return this.haveMultipleMenus;
     }
 
     public boolean canHaveMultipleStores() {
-        return this.canHaveMultipleStores;
+        return this.haveMultipleStores;
     }
 }
