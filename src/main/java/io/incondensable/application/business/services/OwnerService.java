@@ -57,6 +57,10 @@ public class OwnerService {
         return employeeService.createEmployee(employee);
     }
 
+    public void removeEmployee() {
+
+    }
+
     Owner getById(Long ownerId) {
         return ownerRepository.findById(ownerId)
                 .orElseThrow(() -> {

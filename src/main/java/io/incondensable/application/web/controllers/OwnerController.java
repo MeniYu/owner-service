@@ -1,6 +1,5 @@
 package io.incondensable.application.web.controllers;
 
-import io.incondensable.application.business.domain.Employee;
 import io.incondensable.application.business.domain.Owner;
 import io.incondensable.application.business.services.OwnerService;
 import io.incondensable.application.mappers.EmployeeMapper;
@@ -67,11 +66,15 @@ public class OwnerController {
 
     @PostMapping("/v1/{ownerId}/create-employee")
     public ResponseEntity<EmployeeFindResponseDTO> createAndAppendEmployeeToOwner(@PathVariable Long ownerId, @RequestBody EmployeeCreateRequestDto req) {
-        Employee persistedEmployee = ownerService.addEmployee(
+        return ResponseEntity.ok(employeeMapper.entityToDto(ownerService.addEmployee(
                 ownerId,
                 employeeMapper.dtoToEntity(req)
-        );
-        return ResponseEntity.ok(employeeMapper.entityToDto(persistedEmployee));
+        )));
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello";
     }
 
 }

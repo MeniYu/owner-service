@@ -20,7 +20,10 @@ services:
   #      --init-connect=‘GRANT CREATE USER ON *.* TO’root’@‘%’;FLUSH PRIVILEGES;’
 
   backend:
-    image: owner-image
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: owner-image:latest
     container_name: owner-back
     depends_on:
       - owner-db
